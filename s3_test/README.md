@@ -41,3 +41,37 @@ resource "aws_s3_bucket" "web_service" {
   }
 }
 ```
+
+## 테스트 코드 작성
+``` hcl
+variables {
+  # s3_bucket_name 같은 민감한 값은
+  # 이처럼 문자열 그대로 박지 말고 .tfvars를 이용할 것,
+	s3_bucket_name = "my-test-203123"
+	s3_objects = {
+		"file0": "./tests/modules/set_up/s3/create_bucket/backup_files/testfile0"
+	}
+}
+
+run "s3_create_bucket" {
+	module {
+		source = "./tests/modules/set_up/s3/create_bucket"
+	}
+}
+
+run "s3_put_object" {
+	module {
+		source ="./tests/modules/action/s3/put_object"
+	}
+}
+
+run "is_put_object_success" {
+	assert {
+    # run.s3_put_object 블록에서 self 참조할 생각이었는데.
+    # 실행 중인 run 블록의 데이터는 참조할 수 없다해서 
+    # 개수 확인 테스트 케이스를 따로 추가해줬다.
+		condition = run.s3_put_object.length_of_object == 1
+		error_message = "Put Object failed: length of object is not equal to zero."
+	}
+}
+```

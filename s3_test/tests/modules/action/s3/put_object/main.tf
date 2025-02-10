@@ -7,3 +7,7 @@ resource "aws_s3_object" "test_file" {
 
   etag = filemd5(each.value)
 }
+
+output "length_of_object" {
+  value = length(keys(aws_s3_object.test_file))
+}

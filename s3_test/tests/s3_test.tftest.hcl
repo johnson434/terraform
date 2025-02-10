@@ -16,3 +16,10 @@ run "s3_put_object" {
 		source ="./tests/modules/action/s3/put_object"
 	}
 }
+
+run "is_put_object_success" {
+	assert {
+		condition = run.s3_put_object.length_of_object == 1
+		error_message = "Put Object failed: length of object is not equal to zero."
+	}
+}
