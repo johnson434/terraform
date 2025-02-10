@@ -11,8 +11,8 @@ resource "aws_s3_bucket" "web_service" {
     Name = var.s3_bucket_name
   }
 
-  provisioner "local-exec"{
-    when = destroy
+  provisioner "local-exec" {
+    when    = destroy
     command = <<EOC
       aws s3 rm s3://${self.id} --recursive
     EOC
