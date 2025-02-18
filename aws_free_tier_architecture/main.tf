@@ -30,3 +30,11 @@ module "security_group_rules" {
 
   depends_on = [module.security_group]
 }
+
+module "igw" {
+  source = "./modules/network/igw"
+  name = var.igw_name
+  vpc_name = module.vpc.name
+
+  depends_on = [module.vpc]
+}
