@@ -6,6 +6,7 @@ variable "security_group_name" {
 variable "referenced_security_group_name" {
   type = string
   description = "src 혹은 dest가 될 보안그룹입니다. referenced_security_group_name과 cidr_ipv4 중 하나만 필요하다."
+  nullable = true
 }
 
 variable "is_ingress_rule" {
@@ -16,10 +17,11 @@ variable "is_ingress_rule" {
 variable "cidr_ipv4" {
   type = string
   description = "src 혹은 dest가 될 cidr입니다.  referenced_security_group_name과 cidr_ipv4 중 하나만 필요합니다."
+  nullable = true
 }
 
 variable "ip_protocol" {
-  type = string
+  type = string 
   description = "사용할 프로토콜입니다. 모든 프로토콜 허용 시에 -1" 
 }
 
