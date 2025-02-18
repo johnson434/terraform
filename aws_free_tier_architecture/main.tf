@@ -5,9 +5,21 @@ module "vpc" {
   vpc_cidr_block = var.vpc_info.cidr_block
 }
 
+module "subnet" {
+  count = length(var.subnets)
+  source = "./modules/network/subnet"
+
+  name = var.subnets[count.index].name
+  vpc_name = var.subnets[count.index].vpc_name
+  cidr_block = cidrsubnet(var.vpc_info.cidr_block, 4, count.index)
+  az = var.subnets[count.index].az
+  
+  depends_on = [module.vpc]
+}
+
 module "security_group" {
-  source   = "./modules/network/security_group"
   for_each = var.security_groups
+  source   = "./modules/network/security_group"
 
   vpc_id      = module.vpc.id
   name        = each.key
@@ -17,8 +29,8 @@ module "security_group" {
 }
 
 module "security_group_rules" {
-  source   = "./modules/network/security_group_rule"
   for_each = var.security_group_rules
+  source   = "./modules/network/security_group_rule"
 
   security_group_name            = each.value.security_group_name
   referenced_security_group_name = each.value.security_group_name
@@ -33,6 +45,7 @@ module "security_group_rules" {
 
 module "igw" {
   source   = "./modules/network/igw"
+
   name     = var.igw_name
   vpc_name = module.vpc.name
 

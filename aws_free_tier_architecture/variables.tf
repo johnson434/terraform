@@ -35,3 +35,11 @@ variable "security_group_rules" {
 
   description = "Security group rules"
 }
+
+variable "subnets" {
+  type = list(object({
+    name = string
+    vpc_name = string
+    az = string
+  }))
+}
