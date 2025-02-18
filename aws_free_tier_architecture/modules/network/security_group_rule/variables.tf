@@ -1,37 +1,37 @@
 variable "security_group_name" {
-  type = string
+  type        = string
   description = "rule이 부착될 보안그룹의 이름입니다."
 }
 
 variable "referenced_security_group_name" {
-  type = string
+  type        = string
   description = "src 혹은 dest가 될 보안그룹입니다. referenced_security_group_name과 cidr_ipv4 중 하나만 필요하다."
-  nullable = true
+  nullable    = true
 }
 
 variable "is_ingress_rule" {
-  type = bool
+  type        = bool
   description = "규칙이 ingress인지 egress인지 정하는 bool값입니다. true일 시에 ingress, false라면 egress입니다."
 }
 
 variable "cidr_ipv4" {
-  type = string
+  type        = string
   description = "src 혹은 dest가 될 cidr입니다.  referenced_security_group_name과 cidr_ipv4 중 하나만 필요합니다."
-  nullable = true
+  nullable    = true
 }
 
 variable "ip_protocol" {
-  type = string 
-  description = "사용할 프로토콜입니다. 모든 프로토콜 허용 시에 -1" 
+  type        = string
+  description = "사용할 프로토콜입니다. 모든 프로토콜 허용 시에 -1"
 }
 
 variable "from_port" {
-  type = number 
-  description = "열어줄 포트 시작 번호입니다." 
+  type        = number
+  description = "열어줄 포트 시작 번호입니다."
 }
 
 variable "to_port" {
-  type = number
+  type        = number
   description = "열어줄 포트 끝 번호입니다."
 }
 

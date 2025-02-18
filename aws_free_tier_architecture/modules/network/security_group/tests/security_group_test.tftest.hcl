@@ -2,8 +2,8 @@
 mock_provider "aws" {}
 
 variables {
-  vpc_id = "vpc_id"
-  name = "blahblah"
+  vpc_id      = "vpc_id"
+  name        = "blahblah"
   description = "blahblah"
 }
 

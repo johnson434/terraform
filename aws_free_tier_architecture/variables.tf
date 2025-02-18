@@ -1,6 +1,6 @@
 variable "vpc_info" {
   type = object({
-    name = string
+    name       = string
     cidr_block = string
   })
 
@@ -8,7 +8,7 @@ variable "vpc_info" {
 }
 
 variable "igw_name" {
-  type = string
+  type        = string
   description = "IGW 이름"
 }
 
@@ -23,13 +23,13 @@ variable "security_groups" {
 variable "security_group_rules" {
   type = map(
     object({
-      security_group_name = string
-      is_ingress_rule     = bool
+      security_group_name            = string
+      is_ingress_rule                = bool
       referenced_security_group_name = optional(string)
-      cidr_ipv4           = optional(string)
-      ip_protocol         = string
-      from_port           = number
-      to_port             = number
+      cidr_ipv4                      = optional(string)
+      ip_protocol                    = string
+      from_port                      = number
+      to_port                        = number
     })
   )
 
