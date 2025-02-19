@@ -41,9 +41,10 @@ variable "security_group_rules" {
 }
 
 variable "subnets" {
-  type = list(object({
-    name     = string
+  type = map(object({
     vpc_name = string
     az       = string
   }))
+
+  description = "사용할 서브넷 집합. key가 subnet의 이름"
 }
