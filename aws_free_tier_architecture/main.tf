@@ -41,9 +41,7 @@ module "igw" {
   source = "./modules/network/igw"
 
   name     = var.igw_name
-  vpc_name = module.vpc.name
-
-  depends_on = [module.vpc]
+  vpc_id = module.vpc.id
 }
 
 module "security_group" {
