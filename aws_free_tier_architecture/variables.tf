@@ -23,13 +23,17 @@ variable "security_groups" {
 variable "security_group_rules" {
   type = map(
     object({
-      security_group_name            = string
-      is_ingress_rule                = bool
-      referenced_security_group_name = optional(string)
-      cidr_ipv4                      = optional(string)
-      ip_protocol                    = string
-      from_port                      = number
-      to_port                        = number
+      security_group_name = string
+      is_ingress_rule     = bool
+      src_dest = object({
+        type                           = string
+        referenced_security_group_name = optional(string)
+        cidr_ipv4                      = optional(string)
+        cidr_ipv6                      = optional(string)
+      })
+      ip_protocol = string
+      from_port   = number
+      to_port     = number
     })
   )
 
@@ -38,8 +42,8 @@ variable "security_group_rules" {
 
 variable "subnets" {
   type = list(object({
-    name = string
+    name     = string
     vpc_name = string
-    az = string
+    az       = string
   }))
 }
