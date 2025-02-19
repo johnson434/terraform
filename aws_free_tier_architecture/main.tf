@@ -22,8 +22,8 @@ module "subnet" {
 module "nacl" {
   source = "./modules/network/nacl"
 
-  vpc_name = module.vpc.name
-  subnet_name = module.subnet[0].name
+  vpc_id = module.vpc.id
+  subnet_id = module.subnet[0].id
   nacl_rules = {
     "test" : {
       rule_number = 100
@@ -35,11 +35,6 @@ module "nacl" {
       to_port = 80
     }
   }
-
-  depends_on = [
-    module.vpc,
-    module.subnet
-  ]
 }
 
 module "igw" {

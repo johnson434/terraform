@@ -1,9 +1,9 @@
-variable "vpc_name" {
+variable "vpc_id" {
   type = string
   description = "NACL이 속할 VPC"
 }
 
-variable "subnet_name" {
+variable "subnet_id" {
   type = string
   description = "NACL이 적용될 서브넷"
 }

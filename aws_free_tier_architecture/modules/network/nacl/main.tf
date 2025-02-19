@@ -1,22 +1,10 @@
-data "aws_vpc" "default" {
-  tags = {
-    Name = var.vpc_name
-  }
-}
-
-data "aws_subnet" "default" {
-  tags = {
-    Name = var.subnet_name
-  }
-}
-
 resource "aws_network_acl" "default" {
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = var.vpc_id
 }
 
 resource "aws_network_acl_association" "default" {
   network_acl_id = aws_network_acl.default.id
-  subnet_id      = data.aws_subnet.default.id
+  subnet_id      = var.subnet_id
 }
 
 resource "aws_network_acl_rule" "default" {

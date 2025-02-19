@@ -1,3 +1,3 @@
-output "name" {
-  value = aws_subnet.default.tags["Name"]
+output "id" {
+  value = aws_subnet.default.id
 }
