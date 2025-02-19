@@ -27,9 +27,8 @@ resource "aws_vpc_security_group_ingress_rule" "default" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "default" {
-  count             = var.is_ingress_rule == true ? 0 : 1
-  security_group_id = local.sg_id
-  # 안되면 dynamic
+  count                        = var.is_ingress_rule == true ? 0 : 1
+  security_group_id            = local.sg_id
   referenced_security_group_id = var.src_dest.type == local.src_dest_type_sg ? local.referenced_sg_id : null
   cidr_ipv4                    = var.src_dest.type == local.src_dest_type_cidr_ipv4 ? var.src_dest.cidr_ipv4 : null
   cidr_ipv6                    = var.src_dest.type == local.src_dest_type_cidr_ipv6 ? var.src_dest.cidr_ipv6 : null

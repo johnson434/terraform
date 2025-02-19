@@ -4,7 +4,7 @@ data "aws_vpc" "default" {
   }
 }
 
-resource "aws_subnet" "main" {
+resource "aws_subnet" "default" {
   vpc_id            = data.aws_vpc.default.id
   cidr_block        = var.cidr_block
   availability_zone = var.az
