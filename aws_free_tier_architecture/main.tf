@@ -14,11 +14,9 @@ module "subnet" {
   source   = "./modules/network/subnet"
 
   name       = element(local.subnet_keys, count.index)
-  vpc_name   = lookup(var.subnets, element(local.subnet_keys, count.index), null).vpc_name
+  vpc_id   = module.vpc.id
   cidr_block = cidrsubnet(var.vpc_info.cidr_block, 8, count.index)
   az   = lookup(var.subnets, element(local.subnet_keys, count.index), null).az
-
-  depends_on = [module.vpc]
 }
 
 module "nacl" {

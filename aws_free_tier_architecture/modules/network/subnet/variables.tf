@@ -3,9 +3,9 @@ variable "name" {
   description = "Subnet 이름"
 }
 
-variable "vpc_name" {
+variable "vpc_id" {
   type        = string
-  description = "Subnet이 속할 VPC 이름"
+  description = "Subnet이 속할 VPC의 ID"
 }
 
 variable "cidr_block" {
