@@ -1,3 +1,3 @@
-output "name" {
-  value = coalesce(aws_route_table.default.tags["Name"], "test-1")
+output "id" {
+  value = local.route_table_id
 }
