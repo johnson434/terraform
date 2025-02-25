@@ -8,11 +8,20 @@ variable "subnet_id" {
   description = "NACL이 적용될 서브넷"
 }
 
-variable "nacl_rules" {
-  type = map(object({
+variable "nacl_rules_ingress" {
+  type = list(object({
     rule_number = number
-    ingress     = optional(bool)
-    egress      = optional(bool)
+    protocol    = string
+    rule_action = string
+    cidr_block  = string
+    from_port   = number
+    to_port     = number
+  }))
+}
+
+variable "nacl_rules_egress" {
+  type = list(object({
+    rule_number = number
     protocol    = string
     rule_action = string
     cidr_block  = string
