@@ -15,7 +15,7 @@ resource "aws_network_acl_rule" "default" {
   egress         = each.value.egress
   protocol       = each.value.protocol
   rule_action    = each.value.rule_action
-  cidr_block     = each.value.cidr_block 
-  from_port      = each.value.from_port 
-  to_port        = each.value.to_port 
+  cidr_block     = each.value.cidr_block
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }

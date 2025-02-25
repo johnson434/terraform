@@ -85,13 +85,13 @@ module "web_security_group_a" {
 module "igw_route_table" {
   source = "./modules/network/route_table"
 
-  route_table_name = "IGWRouteTable"
-  vpc_id = module.vpc.id
+  route_table_name      = "IGWRouteTable"
+  vpc_id                = module.vpc.id
   associated_subnet_ids = module.subnet[*].id
   aws_routes = [
     {
       destination_cidr_block = "0.0.0.0/0"
-      gateway_id = module.igw.id
+      gateway_id             = module.igw.id
     }
   ]
 }
