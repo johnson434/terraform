@@ -3,12 +3,12 @@ locals {
 }
 
 resource "aws_network_acl" "default" {
-  count = var.create_nacl ? 1 : 0
+  count  = var.create_nacl ? 1 : 0
   vpc_id = var.vpc_id
 }
 
 resource "aws_network_acl_association" "default" {
-  count = var.create_nacl ? 1 : 0
+  count          = var.create_nacl ? 1 : 0
   network_acl_id = local.nacl_id
   subnet_id      = var.subnet_id
 }

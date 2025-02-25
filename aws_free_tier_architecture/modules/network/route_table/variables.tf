@@ -1,5 +1,5 @@
 variable "create_route_table" {
-  type = bool
+  type        = bool
   description = "라우트 테이블을 생성할지 여부"
 
   validation {
@@ -18,11 +18,11 @@ variable "create_route_table" {
 }
 
 variable "route_table_id" {
-  type = string
+  type        = string
   description = "라우트 테이블을 생성하지 않으면 해당 라우트 테이블에 규칙을 작성한다."
 
   nullable = true
-  default = null
+  default  = null
 }
 
 variable "route_table_name" {
@@ -48,5 +48,5 @@ variable "aws_routes" {
   description = "로컬 라우트 룰"
 
   nullable = true
-  default = null
+  default  = null
 }
