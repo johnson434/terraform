@@ -1,12 +1,12 @@
-module "vpc" {
-  source = "./modules/network/vpc"
-
-  vpc_name       = var.vpc_info.name
-  vpc_cidr_block = var.vpc_info.cidr_block
-}
-
 locals {
   subnet_keys = keys(var.subnets)
+}
+
+module "vpc" {
+  source = "./modules/network/vpc"
+  
+  vpc_name       = var.vpc_info.name
+  vpc_cidr_block = var.vpc_info.cidr_block
 }
 
 module "subnet" {
@@ -44,46 +44,40 @@ module "igw" {
   vpc_id = module.vpc.id
 }
 
-module "security_group" {
-  for_each = var.security_groups
-  source   = "./modules/network/security_group"
+module "alb_security_group" {
+  source = "./modules/network/security_group"
+  create_sg = true
+  vpc_id = module.vpc.id
+  name = "ALB"
+  description = "alb sg"
 
-  vpc_id      = module.vpc.id
-  name        = each.key
-  description = each.value.description
+  ingress_rules_cidr_ipv4 = [{
+    cidr_ipv4 = "0.0.0.0/0"
+    ip_protocol = "tcp"
+    from_port = 443
+    to_port = 443
+  }]
 }
 
-module "security_group_rules" {
-  for_each = var.security_group_rules
-  source   = "./modules/network/security_group_rule"
+module "web_security_group_a" {
+  source = "./modules/network/security_group"
+  create_sg = true
+  vpc_id = module.vpc.id
+  name = "test-sg"
+  description = "test-sg dd"
 
-  security_group_name = each.value.security_group_name
-  is_ingress_rule     = each.value.is_ingress_rule
-  src_dest            = each.value.src_dest
-  ip_protocol         = each.value.ip_protocol
-  from_port           = each.value.from_port
-  to_port             = each.value.to_port
-
-  depends_on = [module.security_group]
+  ingress_rules_referenced_sg = [
+    {
+      referenced_sg_id = module.alb_security_group.id
+      ip_protocol = "tcp"
+      from_port = 80
+      to_port = 80
+    }, 
+    {
+      referenced_sg_id = module.alb_security_group.id
+      ip_protocol = "tcp"
+      from_port = 443
+      to_port = 443
+    }
+  ]
 }
-
-module "route_table_private" {
-  source = "./modules/network/route_table"
-  
-  name = var.route_table_private.name
-  vpc_name = module.vpc.name
-  subnet_name = var.route_table_private.subnet_name
-  depends_on = [module.subnet]
-}
-
-module "route_table_rule_private" {
-  count = length(var.route_table_rule_private)
-  source = "./modules/network/route_table_rule"
-
-  route_table_name = module.route_table_private.name
-  destination_cidr_block = element(var.route_table_rule_private, count.index).destination_cidr_block
-  gateway = element(var.route_table_rule_private, count.index).gateway
-  
-  depends_on = [module.route_table_private]
-}
-
