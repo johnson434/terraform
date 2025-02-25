@@ -23,8 +23,8 @@ variable "igw_name" {
 
 variable "route_table_private" {
   type = object({
-    name = string
-    vpc_name = string
+    name        = string
+    vpc_name    = string
     subnet_name = string
   })
 }
