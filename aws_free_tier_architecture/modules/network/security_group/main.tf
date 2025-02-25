@@ -1,12 +1,7 @@
-resource "aws_security_group" "default" {
-  count       = var.create_sg ? 1 : 0
-  name        = var.name
-  description = var.description
-  vpc_id      = var.vpc_id
-
-  tags = {
-    Name = var.name
-  }
+locals {
+  src_dest_type_sg        = "referenced_security_group_name"
+  src_dest_type_cidr_ipv4 = "cidr_ipv4"
+  src_dest_type_cidr_ipv6 = "cidr_ipv6"
 }
 
 data "aws_security_group" "default" {
@@ -16,10 +11,15 @@ data "aws_security_group" "default" {
   }
 }
 
-locals {
-  src_dest_type_sg        = "referenced_security_group_name"
-  src_dest_type_cidr_ipv4 = "cidr_ipv4"
-  src_dest_type_cidr_ipv6 = "cidr_ipv6"
+resource "aws_security_group" "default" {
+  count       = var.create_sg ? 1 : 0
+  name        = var.name
+  description = var.description
+  vpc_id      = var.vpc_id
+
+  tags = {
+    Name = var.name
+  }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "referenced_sg" {
