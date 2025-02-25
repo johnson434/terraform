@@ -1,7 +1,3 @@
 output "id" {
-  value = aws_security_group.default.id
-}
-
-output "name" {
-  value = aws_security_group.default.name
+  value = var.create_sg ? one(aws_security_group.default).id : one(data.aws_security_group.default).id
 }
