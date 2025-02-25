@@ -1,5 +1,5 @@
 variable "create_sg" {
-  type = bool
+  type        = bool
   description = "bool to decide neither create sg. if true then create sg or search the sg and using that sg to attach security_group_rule."
 }
 
@@ -21,71 +21,71 @@ variable "description" {
 variable "ingress_rules_referenced_sg" {
   type = list(object({
     referenced_sg_id = optional(string)
-    ip_protocol = optional(string)
-    from_port = number
-    to_port = number
+    ip_protocol      = optional(string)
+    from_port        = number
+    to_port          = number
   }))
 
   nullable = true
-  default = null
+  default  = null
 }
 
 variable "ingress_rules_cidr_ipv4" {
   type = list(object({
-    cidr_ipv4 = optional(string)
+    cidr_ipv4   = optional(string)
     ip_protocol = optional(string)
-    from_port = number
-    to_port = number
+    from_port   = number
+    to_port     = number
   }))
 
   nullable = true
-  default = null
+  default  = null
 }
 
 variable "ingress_rules_cidr_ipv6" {
   type = list(object({
-    cidr_ipv6 = optional(string)
+    cidr_ipv6   = optional(string)
     ip_protocol = optional(string)
-    from_port = number
-    to_port = number
+    from_port   = number
+    to_port     = number
   }))
 
   nullable = true
-  default = null
+  default  = null
 }
 
 variable "egress_rules_referenced_sg" {
   type = list(object({
     referenced_sg_id = optional(string)
-    ip_protocol = optional(string)
-    from_port = number
-    to_port = number
+    ip_protocol      = optional(string)
+    from_port        = number
+    to_port          = number
   }))
 
   nullable = true
-  default = null
+  default  = null
 }
 
 variable "egress_rules_cidr_ipv4" {
   type = list(object({
-    cidr_ipv4 = optional(string)
+    cidr_ipv4   = optional(string)
     ip_protocol = optional(string)
-    from_port = number
-    to_port = number
+    from_port   = number
+    to_port     = number
   }))
 
   nullable = true
-  default = null
+  default  = null
 }
 
 variable "egress_rules_cidr_ipv6" {
   type = list(object({
-    cidr_ipv6 = optional(string)
+    cidr_ipv6   = optional(string)
     ip_protocol = optional(string)
-    from_port = number
-    to_port = number
+    from_port   = number
+    to_port     = number
   }))
 
   nullable = true
-  default = null
+  default  = null
 }
