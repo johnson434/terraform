@@ -24,17 +24,27 @@ module "nacl" {
 
   vpc_id    = module.vpc.id
   subnet_id = module.subnet[0].id
-  nacl_rules = {
-    "test" : {
+  nacl_rules_ingress = [
+    {
       rule_number = 100
-      ingress     = true
       protocol    = "tcp"
-      rule_action = "deny"
+      rule_action = "allow"
       cidr_block  = "0.0.0.0/0"
       from_port   = 80
       to_port     = 80
     }
-  }
+  ]
+
+  nacl_rules_egress = [
+    {
+      rule_number = 100
+      protocol    = "tcp"
+      rule_action = "allow"
+      cidr_block  = "0.0.0.0/0"
+      from_port   = 0
+      to_port     = 65535
+    }
+  ]
 }
 
 module "igw" {
