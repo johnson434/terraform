@@ -1,33 +1,40 @@
-data "aws_vpc" "default" {
-  tags = {
-    Name = var.vpc_name
-  }
-}
-
-data "aws_subnet" "default" {
-  tags = {
-    Name = var.subnet_name
-  }
+locals {
+  nacl_id = var.create_nacl ? one(aws_network_acl.default).id : var.nacl_id
 }
 
 resource "aws_network_acl" "default" {
-  vpc_id = data.aws_vpc.default.id
+  count  = var.create_nacl ? 1 : 0
+  vpc_id = var.vpc_id
 }
 
 resource "aws_network_acl_association" "default" {
-  network_acl_id = aws_network_acl.default.id
-  subnet_id      = data.aws_subnet.default.id
+  count          = var.create_nacl ? 1 : 0
+  network_acl_id = local.nacl_id
+  subnet_id      = var.subnet_id
 }
 
-resource "aws_network_acl_rule" "default" {
-  for_each = var.nacl_rules
+resource "aws_network_acl_rule" "ingress" {
+  count = var.nacl_rules_ingress != null ? length(var.nacl_rules_ingress) : 0
 
-  network_acl_id = aws_network_acl.default.id
-  rule_number    = each.value.rule_number
-  egress         = each.value.egress
-  protocol       = each.value.protocol
-  rule_action    = each.value.rule_action
-  cidr_block     = each.value.cidr_block 
-  from_port      = each.value.from_port 
-  to_port        = each.value.to_port 
+  network_acl_id = local.nacl_id
+  rule_number    = var.nacl_rules_ingress[count.index].rule_number
+  egress         = false
+  protocol       = var.nacl_rules_ingress[count.index].protocol
+  rule_action    = var.nacl_rules_ingress[count.index].rule_action
+  cidr_block     = var.nacl_rules_ingress[count.index].cidr_block
+  from_port      = var.nacl_rules_ingress[count.index].from_port
+  to_port        = var.nacl_rules_ingress[count.index].to_port
+}
+
+resource "aws_network_acl_rule" "egress" {
+  count = var.nacl_rules_egress != null ? length(var.nacl_rules_egress) : 0
+
+  network_acl_id = local.nacl_id
+  rule_number    = var.nacl_rules_egress[count.index].rule_number
+  egress         = true
+  protocol       = var.nacl_rules_egress[count.index].protocol
+  rule_action    = var.nacl_rules_egress[count.index].rule_action
+  cidr_block     = var.nacl_rules_egress[count.index].cidr_block
+  from_port      = var.nacl_rules_egress[count.index].from_port
+  to_port        = var.nacl_rules_egress[count.index].to_port
 }

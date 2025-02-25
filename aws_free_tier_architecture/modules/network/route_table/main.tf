@@ -1,24 +1,25 @@
-data "aws_vpc" "default" {
-  tags = {
-    Name = var.vpc_name
-  }
-}
-
-data "aws_subnet" "default" {
-  tags = {
-    Name = var.subnet_name
-  }
+locals {
+  route_table_id = var.create_route_table ? one(aws_route_table.default).id : var.route_table_id
 }
 
 resource "aws_route_table" "default" {
-  vpc_id = data.aws_vpc.default.id
+  count  = var.create_route_table ? 1 : 0
+  vpc_id = var.vpc_id
 
   tags = {
-    Name = var.name
+    Name = var.route_table_name
   }
 }
 
 resource "aws_route_table_association" "default" {
-  subnet_id      = data.aws_subnet.default.id
-  route_table_id = aws_route_table.default.id
+  for_each       = toset(var.associated_subnet_ids)
+  subnet_id      = each.value
+  route_table_id = local.route_table_id
+}
+
+resource "aws_route" "default" {
+  count                  = var.aws_routes != null ? length(var.aws_routes) : 0
+  route_table_id         = local.route_table_id
+  destination_cidr_block = var.aws_routes[count.index].destination_cidr_block
+  gateway_id             = var.aws_routes[count.index].gateway_id
 }
