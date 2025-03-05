@@ -12,8 +12,8 @@ resource "aws_route_table" "default" {
 }
 
 resource "aws_route_table_association" "default" {
-  for_each       = toset(var.associated_subnet_ids)
-  subnet_id      = each.value
+  count          = length(var.associated_subnet_ids)
+  subnet_id      = var.associated_subnet_ids[count.index]
   route_table_id = local.route_table_id
 }
 
