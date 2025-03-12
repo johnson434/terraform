@@ -5,6 +5,10 @@ module "main_vpc" {
   vpc_cidr_block = var.main_vpc_cidr_block
 }
 
+locals {
+  web_subnet = cidrsubnet(var.main_vpc_cidr_block, 8, length(var.subnets) + 1)
+}
+
 module "subnets" {
   count  = length(keys(var.subnets))
   source = "../modules/network/subnet"
@@ -69,4 +73,10 @@ module "alb_security_group" {
     from_port   = 443
     to_port     = 443
   }]
+}
+
+module "cloudfront_front_page" {
+  source                   = "../modules/cloudfront"
+  bucket_name              = "web-front-bucket-test"
+  using_default_index_page = true
 }
